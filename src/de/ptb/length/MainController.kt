@@ -6,6 +6,7 @@ import de.ptb.length.listener.addIntParaListener
 import de.ptb.length.listener.addRealParaListener
 import org.w3c.dom.*
 import kotlin.browser.document
+import kotlin.browser.window
 
 /**
  * @description
@@ -32,7 +33,7 @@ fun main(args: Array<String>) {
     val transverseModuleFixBox: HTMLInputElement = document.getElementById("transverseModuleFixBox") as HTMLInputElement
     val transverseModuleContradictionInput: HTMLInputElement = document.getElementById("transverseModuleContradictionInput") as HTMLInputElement
     val axialModuleValueInput: HTMLInputElement = document.getElementById("axialModuleValueInput") as HTMLInputElement
-    val axialModuleFixModule: HTMLInputElement = document.getElementById("axialModuleFixModule") as HTMLInputElement
+    val axialModuleFixBox: HTMLInputElement = document.getElementById("axialModuleFixBox") as HTMLInputElement
     val axialModuleContradictionInput: HTMLInputElement = document.getElementById("axialModuleContradictionInput") as HTMLInputElement
     val baseModuleValueInput: HTMLInputElement = document.getElementById("baseModuleValueInput") as HTMLInputElement
     val baseModuleFixBox: HTMLInputElement = document.getElementById("baseModuleFixBox") as HTMLInputElement
@@ -60,6 +61,11 @@ fun main(args: Array<String>) {
     val baseDiameterFixBox: HTMLInputElement = document.getElementById("baseDiameterFixBox") as HTMLInputElement
     val baseDiameterContradictionInput: HTMLInputElement = document.getElementById("baseDiameterContradictionInput") as HTMLInputElement
     val InformationArea: HTMLDivElement = document.getElementById("informationArea") as HTMLDivElement
+    val clearBtn: HTMLButtonElement = document.getElementById("clearBtn") as HTMLButtonElement
+    val calculateBtn: HTMLButtonElement = document.getElementById("calculateBtn") as HTMLButtonElement
+    val quitBtn: HTMLButtonElement = document.getElementById("quitBtn") as HTMLButtonElement
+
+
     // initial module
     val teethNumber: TeethNumber = TeethNumber(false, "", 1000, 1, 4)
     val moduleNormal = ModuleNormal(false, 2, 4, 100.0, 0.001, "")
@@ -95,16 +101,103 @@ fun main(args: Array<String>) {
     baseDiameterValueInput.addRealParaListener(diameterBase, InformationArea)
 
     // switch button
+
+    //fix button
+    teethNumberFixBox.onclick = {
+        teethNumber.fixed = teethNumberFixBox.checked
+        println("teeth number fixed: ${teethNumber.fixed}")
+    }
+    normalModuleFixBox.onclick = {
+        moduleNormal.fixed = normalModuleFixBox.checked
+        println("normal module fixed: ${normalModuleFixBox.checked}")
+    }
+    transverseModuleFixBox.onclick = {
+        moduleTransverse.fixed = transverseModuleFixBox.checked
+        println("transverse module fixed: ${transverseModuleFixBox.checked}")
+    }
+    axialModuleFixBox.onclick = {
+        moduleAxial.fixed = axialModuleFixBox.checked
+        println("axial module fixed: ${axialModuleFixBox.checked}")
+    }
+    baseModuleFixBox.onclick = {
+        moduleBase.fixed = baseDiameterFixBox.checked
+        println("base module fixed: ${baseModuleFixBox.checked}")
+    }
+    normalPressureAngleFixBox.onclick = {
+        anglePressureNormal.setFixed(normalPressureAngleFixBox.checked)
+        println("normal pressure angle fixed : ${normalPressureAngleFixBox.checked}")
+    }
+    pressureAngleFixBox.onclick = {
+        anglePressure.setFixed(pressureAngleFixBox.checked)
+        println("pressure angle fixed : ${pressureAngleFixBox.checked}")
+    }
+    helixAngleFixBox.onclick = {
+        angleHelix.setFixed(helixAngleFixBox.checked)
+        println("helix angle fixed: ${helixAngleFixBox.checked}")
+    }
+    leadAngleFixBox.onclick = {
+        angleLead.setFixed(leadAngleFixBox.checked)
+        println("lead angle fixed: ${leadAngleFixBox.checked}")
+    }
+    referenceDiameterFixBox.onclick = {
+        diameterReference.fixed = referenceDiameterFixBox.checked
+        println("reference diameter fixed: ${referenceDiameterFixBox.checked}")
+    }
+    baseDiameterFixBox.onclick = {
+        diameterBase.fixed = baseDiameterFixBox.checked
+        println("base diameter fixed: ${baseDiameterFixBox.checked}")
+    }
     // fixed button
 
-
-    val button1 = document.getElementById("key_button_1") as HTMLButtonElement
-    button1.onclick = {
-        val active: Element? = document.activeElement
-        if (active is HTMLInputElement) {
-            val event = document.createEvent("KeyboardEvent")
-//            event.initEvent("keydown", true, false)
-
-        }
+    // control buttons
+    clearBtn.onclick = {
+        teethNumber.clear()
+        moduleNormal.clear()
+        moduleTransverse.clear()
+        moduleAxial.clear()
+        moduleBase.clear()
+        anglePressureNormal.clear()
+        anglePressure.clear()
+        angleHelix.clear()
+        angleLead.clear()
+        diameterReference.clear()
+        diameterBase.clear()
+        teethNumberValueInput.value = ""
+        normalModuleValueInput.value = ""
+        transverseModuleValueInput.value = ""
+        axialModuleValueInput.value = ""
+        baseModuleValueInput.value = ""
+        normalPressureAngleValueInput.value = ""
+        pressureAngleValueInput.value = ""
+        helixAngleValueInput.value = ""
+        leadAngleValueInput.value = ""
+        referenceDiameterValueInput.value = ""
+        baseDiameterValueInput.value = ""
+        teethNumberFixBox.checked = false
+        normalModuleFixBox.checked = false
+        transverseModuleFixBox.checked = false
+        axialModuleFixBox.checked = false
+        baseModuleFixBox.checked = false
+        normalPressureAngleFixBox.checked = false
+        pressureAngleFixBox.checked = false
+        helixAngleFixBox.checked = false
+        leadAngleFixBox.checked = false
+        referenceDiameterFixBox.checked = false
+        baseDiameterFixBox.checked = false
+        teethNumberContradictionInput.value = ""
+        normalModuleContradictionInput.value = ""
+        transverseModuleContradictionInput.value = ""
+        axialModuleContradictionInput.value = ""
+        baseModuleContradictionInput.value = ""
+        normalPressureAngleContradictionInput.value = ""
+        pressureAngleContradictionInput.value = ""
+        helixAngleContradictionInput.value = ""
+        leadAngleContradictionInput.value = ""
+        referenceDiameterContradictionInput.value = ""
+        baseDiameterContradictionInput.value = ""
+        println("calculator clear!")
+    }
+    quitBtn.onclick = {
+        window.close()
     }
 }
