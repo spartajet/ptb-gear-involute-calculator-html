@@ -11,7 +11,7 @@ import de.ptb.length.math.format
  * @create 2017-07-21 上午9:42
  * @email spartajet.guo@gmail.com
  */
-abstract class ParaAngle(override var fixed: Boolean, open val unit: String, open var valueLimitMax: Angle, open var valueLimitMin: Angle, open val digitsAfterDotSecond: Int) : Para(fixed), IAngle {
+abstract class ParaAngle(fixed: Boolean, val unit: String, var valueLimitMax: Angle, var valueLimitMin: Angle, val digitsAfterDotSecond: Int) : Para(fixed), IAngle {
     val inputCheck: InputCheckAngle = InputCheckAngle(this.digitsAfterDotSecond, this.valueLimitMax, this.valueLimitMin)
 
     /**

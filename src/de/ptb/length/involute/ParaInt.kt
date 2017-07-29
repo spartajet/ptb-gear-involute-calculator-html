@@ -7,7 +7,7 @@ import de.ptb.length.check.InputCheckInt
  * @create 2017-07-20 下午9:20
  * @email spartajet.guo@gmail.com
  */
-abstract class ParaInt(override var fixed: Boolean, open val unit: String, open val valueLimitMax: Int, open val valueLimitMin: Int, open val digitsLimitMax: Int) : Para(fixed) {
+abstract class ParaInt( fixed: Boolean, val unit: String, val valueLimitMax: Int, val valueLimitMin: Int, val digitsLimitMax: Int) : Para(fixed) {
 
     val inputCheck: InputCheckInt = InputCheckInt(this.valueLimitMax, this.valueLimitMin, this.digitsLimitMax)
     /**

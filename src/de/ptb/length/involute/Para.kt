@@ -8,7 +8,7 @@ import de.ptb.length.check.InputCheckResult
  * @create 2017-07-20 下午9:11
  * @email spartajet.guo@gmail.com
  */
-abstract class Para(open var fixed: Boolean = false) : ICheckable {
+abstract class Para(var fixed: Boolean = false) : ICheckable {
     /**
      * The Value string.
      */

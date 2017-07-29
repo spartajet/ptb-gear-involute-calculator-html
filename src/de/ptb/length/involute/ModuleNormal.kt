@@ -10,7 +10,7 @@ import kotlin.js.Math
  * @create 2017-07-22 上午11:00
  * @email spartajet.guo@gmail.com
  */
-class ModuleNormal(override var fixed: Boolean, override val lengthAllowedDotBefore: Int, override val lengthAllowedDotAfter: Int, override val valueLimitMax: Double, override val valueLimitMin: Double, override val unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit) {
+class ModuleNormal( fixed: Boolean,  lengthAllowedDotBefore: Int,  lengthAllowedDotAfter: Int,  valueLimitMax: Double,  valueLimitMin: Double,  unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit) {
     fun calculateValue(moduleTransverse: ModuleTransverse, angleHelix: IAngleHelix, diameterReference: DiameterReference, teethNumber: TeethNumber, angleLead: IAngleLead, anglePressure: IAnglePressure, diameterBase: DiameterBase, anglePressureNormal: IAnglePressureNormal, moduleBasic: ModuleBasic, moduleAxial: ModuleAxial) {
         var mn = Double.MAX_VALUE
         if (!(moduleTransverse.calculationSucceed && angleHelix.isCalculationSucceed() && diameterReference.calculationSucceed && teethNumber.calculationSucceed && angleLead.isCalculationSucceed() && anglePressure.isCalculationSucceed() && diameterBase.calculationSucceed && anglePressureNormal.isCalculationSucceed() && moduleBasic.calculationSucceed && moduleAxial.calculationSucceed)) {

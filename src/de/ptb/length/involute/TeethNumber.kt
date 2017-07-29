@@ -9,7 +9,7 @@ import kotlin.js.Math
  * @create 2017-07-21 上午10:27
  * @email spartajet.guo@gmail.com
  */
-class TeethNumber(override var fixed: Boolean, override val unit: String, override val valueLimitMax: Int, override val valueLimitMin: Int, override val digitsLimitMax: Int) : ParaInt(fixed, unit, valueLimitMax, valueLimitMin, digitsLimitMax) {
+class TeethNumber( fixed: Boolean,  unit: String,  valueLimitMax: Int,  valueLimitMin: Int,  digitsLimitMax: Int) : ParaInt(fixed, unit, valueLimitMax, valueLimitMin, digitsLimitMax) {
 
 
 

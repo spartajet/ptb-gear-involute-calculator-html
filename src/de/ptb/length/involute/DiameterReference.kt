@@ -9,7 +9,7 @@ import kotlin.js.Math
  * @create 2017-07-21 下午2:23
  * @email spartajet.guo@gmail.com
  */
-class DiameterReference(override var fixed: Boolean, override val lengthAllowedDotBefore: Int, override val lengthAllowedDotAfter: Int, override val valueLimitMax: Double, override val valueLimitMin: Double, override val unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit) {
+class DiameterReference( fixed: Boolean,  lengthAllowedDotBefore: Int,  lengthAllowedDotAfter: Int,  valueLimitMax: Double,  valueLimitMin: Double,  unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit) {
     fun calculateValue(moduleTransverse: ModuleTransverse, angleHelix: IAngleHelix, moduleNormal: ModuleNormal, teethNumber: TeethNumber, diameterBase: DiameterBase, anglePressure: IAnglePressure, anglePressureNormal: IAnglePressureNormal, moduleBasic: ModuleBasic) {
         var d = Double.MAX_VALUE
         if (!(moduleTransverse.calculationSucceed && angleHelix.isCalculationSucceed() && moduleNormal.calculationSucceed && teethNumber.calculationSucceed && diameterBase.calculationSucceed && anglePressure.isCalculationSucceed() && anglePressureNormal.isCalculationSucceed() && moduleBasic.calculationSucceed && this.calculationSucceed)) {

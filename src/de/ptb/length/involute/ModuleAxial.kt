@@ -9,7 +9,7 @@ import de.ptb.length.math.tan
  * @create 2017-07-22 上午10:52
  * @email spartajet.guo@gmail.com
  */
-class ModuleAxial(override var fixed: Boolean, override val lengthAllowedDotBefore: Int, override val lengthAllowedDotAfter: Int, override val valueLimitMax: Double, override val valueLimitMin: Double, override val unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit) {
+class ModuleAxial( fixed: Boolean,  lengthAllowedDotBefore: Int,  lengthAllowedDotAfter: Int,  valueLimitMax: Double,  valueLimitMin: Double,  unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit) {
     
     
     fun calculateValue(moduleTransverse: ModuleTransverse, moduleNormal: ModuleNormal, angleHelix: IAngleHelix, angleLead: IAngleLead) {

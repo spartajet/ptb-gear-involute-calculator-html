@@ -1,16 +1,11 @@
 package de.ptb.length.involute
 
-import de.ptb.length.math.Radian2Grad
-import de.ptb.length.math.cos
-import de.ptb.length.math.tan
-import kotlin.js.Math
-
 /**
  * @description
  * @create 2017-07-21 下午12:43
  * @email spartajet.guo@gmail.com
  */
-class AngleHelixReal(override var fixed: Boolean, override val lengthAllowedDotBefore: Int, override val lengthAllowedDotAfter: Int, override val valueLimitMax: Double, override val valueLimitMin: Double, override val unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit), IAngleHelix {
+class AngleHelixReal(fixed: Boolean, lengthAllowedDotBefore: Int, lengthAllowedDotAfter: Int, valueLimitMax: Double, valueLimitMin: Double, unit: String) : ParaReal(fixed, lengthAllowedDotBefore, lengthAllowedDotAfter, valueLimitMax, valueLimitMin, unit), IAngleHelix {
 
     override fun calculateValue(diameterReference: DiameterReference, moduleTransverse: ModuleTransverse, moduleNormal: ModuleNormal, diameterBase: DiameterBase, anglePressure: IAngle, angleLead: IAngle, moduleBasic: ModuleBasic, anglePressureNormal: IAngle, teethNumber: TeethNumber) {
         var beta = Double.MAX_VALUE
@@ -129,191 +124,8 @@ class AngleHelixReal(override var fixed: Boolean, override val lengthAllowedDotB
         }
     }
 
-
-    /**
-     * Calculate beta according to equation 2 from ISO 21771:2007 If the calculation
-     * is succeed beta is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param moduleTransverse transverse module inputValue
-     * *
-     * @param moduleNormal     normal module inputValue
-     * *
-     * @return beta calculated
-     */
-    private fun beta01(moduleTransverse: Double, moduleNormal: Double): Double {
-
-        var beta = Double.MAX_VALUE
-        try {
-            beta = Math.acos(moduleNormal / moduleTransverse)
-            this.calculationSucceed = true
-            val degree = Radian2Grad(beta)
-            return degree
-        } catch (e: Exception) {
-            this.calculationSucceed = false
-            return Double.MAX_VALUE
-        }
-
-    }
-
-    /**
-     * Calculate beta according to equation 23 from ISO 21771:2007 If the calculation
-     * is succeed beta is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param z                 numbers of teeth inputValue
-     * *
-     * @param moduleNormal      normal module inputValue
-     * *
-     * @param diameterReference reference diameter inputValue
-     * *
-     * @return beta calculated
-     */
-    private fun beta02(z: Int, moduleNormal: Double, diameterReference: Double): Double {
-
-        var beta = Double.MAX_VALUE
-        try {
-            beta = Math.acos(z * moduleNormal / diameterReference)
-            val degree = Radian2Grad(beta)
-            this.calculationSucceed = true
-            return degree
-        } catch (e: Exception) {
-            this.calculationSucceed = false
-            return Double.MAX_VALUE
-        }
-
-    }
-
-    /**
-     * Calculate beta according to equation 4.3.2 from ISO 21771:2007 If the calculation
-     * is succeed gamma is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param gamma gamma  inputValue
-     * *
-     * @return gamma calculated
-     */
-    private fun beta03(gamma: Double): Double {
-        if (gamma <= 0 || gamma > 90) {
-            this.calculationSucceed = false
-            return Double.MAX_VALUE
-        }
-        this.calculationSucceed = true
-        return 90 - gamma
-    }
-
-    /**
-     * Calculate beta according to equation 3 from ISO 21771:2007 If the calculation
-     * is succeed beta is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param moduleTransverse transverse module inputValue
-     * *
-     * @param moduleNormal     normal module inputValue
-     * *
-     * @param gamma            gamma inputValue
-     * *
-     * @return beta calculated
-     */
-    private fun beta04(moduleTransverse: Double, moduleNormal: Double, gamma: Double): Double {
-
-        var beta = Double.MAX_VALUE
-        try {
-            beta = Math.atan(cos(gamma) * moduleTransverse / moduleNormal)
-            val degree = Radian2Grad(beta)
-            this.calculationSucceed = true
-            return degree
-        } catch (e: Exception) {
-            this.calculationSucceed = false
-            return Double.MAX_VALUE
-        }
-
-    }
-
-    /**
-     * Calculate beta according to equation 14 from ISO 21771:2007 If the calculation
-     * is succeed beta is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param alphaN normal pressure angle inputValue
-     * *
-     * @param alphaT pressure angle inputValue
-     * *
-     * @return beta calculated
-     */
-    private fun beta05(alphaN: Double, alphaT: Double): Double {
-        var beta = Double.MAX_VALUE
-        try {
-            beta = Math.acos(tan(alphaN) / tan(alphaT))
-            val degree = Radian2Grad(beta)
-            this.calculationSucceed = true
-            return degree
-        } catch (e: Exception) {
-            this.calculationSucceed = false
-            return Double.MAX_VALUE
-        }
-
-    }
-
-    /**
-     * Calculate beta according to equation 2.3 from DIN 3960 If the calculation
-     * is succeed beta is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param moduleNormal normal module inputValue
-     * *
-     * @param moduleBasic  basic module inputValue
-     * *
-     * @param alphaN       normal pressure angle inputValue
-     * *
-     * @return beta calculated
-     */
-    private fun beta06(moduleNormal: Double, moduleBasic: Double, alphaN: Double): Double {
-        val beta: Double
-        try {
-            val temp = Math.sqrt(Math.pow(moduleNormal, 2.0) / Math.pow(moduleBasic, 2.0) - Math.pow(tan(alphaN), 2.0))
-            beta = Math.acos(temp)
-            val degree = Radian2Grad(beta)
-            this.calculationSucceed = true
-            return degree
-        } catch (e: Exception) {
-            this.calculationSucceed = false
-            return Double.MAX_VALUE
-        }
-
-    }
-
-    /**
-     * Calculate beta according to equation 2.5 from DIN 3960 If the calculation
-     * is succeed beta is equal the calculation, otherwise is set as
-     * Const.NonSensD
-
-     * @param moduleNormal normal module inputValue
-     * *
-     * @param moduleBasic  basic module inputValue
-     * *
-     * @param alphaT       pressure angle
-     * *
-     * @return beta calculated
-     */
-    private fun beta07(moduleNormal: Double, moduleBasic: Double, alphaT: Double): Double {
-        try {
-            val temp = moduleNormal * cos(alphaT) / moduleBasic
-            val beta = Math.acos(temp)
-            val degree = Radian2Grad(beta)
-//            logger.info("beta07 calculate success return value: " + degree)
-            this.calculationSucceed = true
-            return degree
-        } catch (e: Exception) {
-            this.calculationSucceed = false
-//            logger.info("beta07 calculate fail, return double max")
-            return Double.MAX_VALUE
-        }
-
-    }
-
     override fun setFixed(value: Boolean) {
-        this.fixed=value
+        this.fixed = value
     }
 
     override fun isCalculationSucceed() = this.calculationSucceed
@@ -328,9 +140,9 @@ class AngleHelixReal(override var fixed: Boolean, override val lengthAllowedDotB
 
     override fun getRoundContradictionString(): String = this.round_Contradiction.toString()
 
-    override fun getValueLimitMin(): Double =this.valueLimitMin
+    override fun getValueLimitMin(): Double = this.valueLimitMin
 
-    override fun getValueLimitMax(): Double =this.valueLimitMax
+    override fun getValueLimitMax(): Double = this.valueLimitMax
 
     override fun setInputValue(value: Angle) {
         this.inputValue = value.toReal()
@@ -340,5 +152,8 @@ class AngleHelixReal(override var fixed: Boolean, override val lengthAllowedDotB
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getInputValueString(): String =this.inputValue.toString()
+    override fun getInputValueString(): String = this.inputValue.toString()
+    override fun calculateResult(result: Boolean) {
+        this.calculationSucceed = result
+    }
 }

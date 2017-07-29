@@ -11,7 +11,7 @@ import de.ptb.length.math.format
  * @create 2017-07-21 上午8:52
  * @email spartajet.guo@gmail.com
  */
-open class ParaReal(override var fixed: Boolean, open val lengthAllowedDotBefore: Int, open val lengthAllowedDotAfter: Int, open val valueLimitMax: Double, open val valueLimitMin: Double, open val unit: String) : Para(fixed) {
+open class ParaReal( fixed: Boolean, val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter: Int, val valueLimitMax: Double, val valueLimitMin: Double, val unit: String) : Para(fixed) {
 
     val inputCheck: InputCheckReal = InputCheckReal(this.lengthAllowedDotBefore, this.lengthAllowedDotAfter, this.valueLimitMax, this
             .valueLimitMin)

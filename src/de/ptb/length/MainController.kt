@@ -60,8 +60,8 @@ fun main(args: Array<String>) {
     val baseDiameterFixBox: HTMLInputElement = document.getElementById("baseDiameterFixBox") as HTMLInputElement
     val baseDiameterContradictionInput: HTMLInputElement = document.getElementById("baseDiameterContradictionInput") as HTMLInputElement
     val InformationArea: HTMLDivElement = document.getElementById("informationArea") as HTMLDivElement
-    val teethNumber: TeethNumber = TeethNumber(false, "", 1000, 1, 4)
     // initial module
+    val teethNumber: TeethNumber = TeethNumber(false, "", 1000, 1, 4)
     val moduleNormal = ModuleNormal(false, 2, 4, 100.0, 0.001, "")
     val moduleTransverse = ModuleTransverse(false, 2, 4, 100.0, 0.001, "")
     val moduleAxial = ModuleAxial(false, 4, 4, 1000.0, 0.001, "")
