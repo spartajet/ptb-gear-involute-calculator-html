@@ -14,7 +14,6 @@ import kotlin.dom.clear
  * @create 2017-07-25 上午8:43
  * @email spartajet.guo@gmail.com
  */
-//class HTMLInputRealKeyListner {
 fun HTMLInputElement.addRealParaListener(para: ParaReal, InformationArea: HTMLDivElement) {
     this.addEventListener("keydown", { event ->
         val keyEvent: KeyboardEvent = event as KeyboardEvent
@@ -53,12 +52,9 @@ fun checkRealChar(paraReal: ParaReal, char: Char, event: KeyboardEvent, Informat
         }
         InformationArea.textContent = infoText
     } else {
-        event.preventDefault()
-        htmlInputElement.clear()
-        htmlInputElement.textContent = result.valueString
+        htmlInputElement.value = result.valueString
         paraReal.inputValue = result.value
         paraReal.valueString = result.valueString
         InformationArea.clear()
     }
 }
-//}

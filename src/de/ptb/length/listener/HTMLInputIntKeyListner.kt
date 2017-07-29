@@ -5,7 +5,6 @@ import de.ptb.length.involute.ParaInt
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.KeyboardEvent
-import kotlin.dom.clear
 
 /**
  * @description
@@ -48,11 +47,9 @@ fun checkIntChar(para: ParaInt, char: Char, event: KeyboardEvent, InformationAre
         para.valueString = result.valueString
         InformationArea.textContent = infoText
     } else {
-        event.preventDefault()
-        htmlInputElement.clear()
-        htmlInputElement.textContent = result.valueString
+        htmlInputElement.value = result.valueString
         para.inputValue = result.value
         para.valueString = result.valueString
-        InformationArea.clear()
+        InformationArea.textContent = ""
     }
 }

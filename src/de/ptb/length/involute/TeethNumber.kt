@@ -9,11 +9,7 @@ import kotlin.js.Math
  * @create 2017-07-21 上午10:27
  * @email spartajet.guo@gmail.com
  */
-class TeethNumber( fixed: Boolean,  unit: String,  valueLimitMax: Int,  valueLimitMin: Int,  digitsLimitMax: Int) : ParaInt(fixed, unit, valueLimitMax, valueLimitMin, digitsLimitMax) {
-
-
-
-
+class TeethNumber(fixed: Boolean, unit: String, valueLimitMax: Int, valueLimitMin: Int, digitsLimitMax: Int) : ParaInt(fixed, unit, valueLimitMax, valueLimitMin, digitsLimitMax) {
     override fun calculateValue() = false
 
     override fun calculateContradiction() = false

@@ -40,7 +40,7 @@ abstract class Para(var fixed: Boolean = false) : ICheckable {
     /**
      * The First.
      */
-    protected var first: Boolean = false
+     var first: Boolean = false
     /**
      * The Run.
      */

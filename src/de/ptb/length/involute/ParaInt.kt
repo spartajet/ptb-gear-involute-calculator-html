@@ -7,7 +7,7 @@ import de.ptb.length.check.InputCheckInt
  * @create 2017-07-20 下午9:20
  * @email spartajet.guo@gmail.com
  */
-abstract class ParaInt( fixed: Boolean, val unit: String, val valueLimitMax: Int, val valueLimitMin: Int, val digitsLimitMax: Int) : Para(fixed) {
+abstract class ParaInt(fixed: Boolean, val unit: String, val valueLimitMax: Int, val valueLimitMin: Int, val digitsLimitMax: Int) : Para(fixed) {
 
     val inputCheck: InputCheckInt = InputCheckInt(this.valueLimitMax, this.valueLimitMin, this.digitsLimitMax)
     /**
@@ -21,11 +21,11 @@ abstract class ParaInt( fixed: Boolean, val unit: String, val valueLimitMax: Int
     /**
      * The Result value.
      */
-     var resultValue: Int = 0
+    var resultValue: Int = 0
     /**
      * The Result min.
      */
-    protected var resultValueMin: Int = 0
+    var resultValueMin: Int = 0
     /**
      * The Result max.
      */
@@ -91,7 +91,7 @@ abstract class ParaInt( fixed: Boolean, val unit: String, val valueLimitMax: Int
 
      * @param number the number
      */
-    protected fun refreshValue(number: Int) {
+    fun refreshValue(number: Int) {
         if (this.checkLimit(number)) {
             this.resultValue = number
             this.refreshMinMax(number)
@@ -126,7 +126,7 @@ abstract class ParaInt( fixed: Boolean, val unit: String, val valueLimitMax: Int
 
      * @param number the number
      */
-    private fun fixed(number: Int) {
+    fun fixed(number: Int) {
         if (this.first) {
             this.resultValue = firstValue
         } else {

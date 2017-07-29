@@ -57,7 +57,7 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
     /**
      * The Cursor.
      */
-    private var cursor1: InputCheck.Cursor = Cursor.CURSOR_START
+    var cursor: Cursor = Cursor.CURSOR_START
     /**
      * The Character list.
      */
@@ -66,12 +66,14 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
     override fun addChar(c: Char): InputCheckResult {
         this.result.code = ERROR_CODE_NO_ERROR
         this.result.message = ERROR_MESSAGE_NO_ERROR
-        if (c.toInt() == 8) {
+        val backSpaceChar = 8.toChar()
+        val isbackSpace = c == backSpaceChar
+        if (isbackSpace) {
             this.backSpaceCheck()
         } else {
-            when (this.cursor1) {
+            when (this.cursor) {
                 Cursor.CURSOR_START -> this.firstCharCheck(c)
-                Cursor.CURSOR_SIGNAL, InputCheck.Cursor.CURSOR_INTEGER -> this.integerPartCheck(c)
+                Cursor.CURSOR_SIGNAL, Cursor.CURSOR_INTEGER -> this.integerPartCheck(c)
             }
         }
         this.generateResultValue()
@@ -82,7 +84,7 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
     override fun clear() {
         this.characterList.clear()
         this.signalFlag = true
-        this.cursor1 = InputCheck.Cursor.CURSOR_START
+        this.cursor = Cursor.CURSOR_START
         this.result.code = ERROR_CODE_NO_ERROR
         this.result.message = ERROR_MESSAGE_NO_ERROR
         this.result.valueString = ""
@@ -106,11 +108,11 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
             }
             '-' -> {
                 this.signalFlag = false
-                this.cursor1 = InputCheck.Cursor.CURSOR_SIGNAL
+                this.cursor = Cursor.CURSOR_SIGNAL
             }
             '1', '2', '3', '4', '5', '6', '7', '8', '9' -> if (this.checkTempNumber(c)) {
                 this.characterList.add(c)
-                this.cursor1 = InputCheck.Cursor.CURSOR_INTEGER
+                this.cursor = Cursor.CURSOR_INTEGER
             }
             else -> {
                 this.result.code = ERROR_CODE_ILLEGAL_CHARACTER
@@ -174,20 +176,20 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
      * Back space check.
      */
     private fun backSpaceCheck() {
-        when (cursor1) {
-            InputCheck.Cursor.CURSOR_START -> {
+        when (cursor) {
+            Cursor.CURSOR_START -> {
             }
-            InputCheck.Cursor.CURSOR_SIGNAL -> {
-                this.cursor1 = InputCheck.Cursor.CURSOR_START
+            Cursor.CURSOR_SIGNAL -> {
+                this.cursor = Cursor.CURSOR_START
                 this.signalFlag = true
             }
-            InputCheck.Cursor.CURSOR_INTEGER -> {
+            Cursor.CURSOR_INTEGER -> {
                 this.characterList.removeAt(this.characterList.size - 1)
                 if (this.characterList.size == 0) {
                     if (!this.signalFlag) {
-                        this.cursor1 = InputCheck.Cursor.CURSOR_SIGNAL
+                        this.cursor = Cursor.CURSOR_SIGNAL
                     } else {
-                        this.cursor1 = InputCheck.Cursor.CURSOR_START
+                        this.cursor = Cursor.CURSOR_START
                     }
                 }
             }
@@ -198,7 +200,7 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
      * Generate result inputValue.
      */
     private fun generateResultValue() {
-        if (this.cursor1 == InputCheck.Cursor.CURSOR_START || this.cursor1 == InputCheck.Cursor.CURSOR_SIGNAL) {
+        if (this.cursor == Cursor.CURSOR_START || this.cursor == Cursor.CURSOR_SIGNAL) {
             this.result.value = 0
             return
         }
@@ -214,11 +216,11 @@ class InputCheckInt(val valueLimitMax: Int, val valueLimitMin: Int, val digitsLi
      * Generate result value string.
      */
     private fun generateResultValueString() {
-        if (this.cursor1 == InputCheck.Cursor.CURSOR_START) {
+        if (this.cursor == Cursor.CURSOR_START) {
             this.result.valueString = ""
             return
         }
-        if (this.cursor1 == InputCheck.Cursor.CURSOR_SIGNAL) {
+        if (this.cursor == Cursor.CURSOR_SIGNAL) {
             this.result.valueString = "-"
             return
         }

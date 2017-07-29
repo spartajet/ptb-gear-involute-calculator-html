@@ -23,7 +23,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
     /**
      * The Cursor.
      */
-    private var cursor: InputCheck.Cursor = Cursor.CURSOR_START
+    private var cursor: Cursor = Cursor.CURSOR_START
     /**
      * The Integer list.
      */
@@ -52,9 +52,9 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
             this.backSpaceCheck()
         } else {
             when (cursor) {
-                InputCheck.Cursor.CURSOR_START -> this.firstCharCheck(c)
-                InputCheck.Cursor.CURSOR_SIGNAL, InputCheck.Cursor.CURSOR_INTEGER -> this.integerPartCheck(c)
-                InputCheck.Cursor.CURSOR_DOT, InputCheck.Cursor.CURSOR_DECIMAL -> this.decimalPartCheck(c)
+                Cursor.CURSOR_START -> this.firstCharCheck(c)
+                Cursor.CURSOR_SIGNAL, Cursor.CURSOR_INTEGER -> this.integerPartCheck(c)
+                Cursor.CURSOR_DOT, Cursor.CURSOR_DECIMAL -> this.decimalPartCheck(c)
             }
         }
         this.generateResultValue()
@@ -69,7 +69,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
         this.result.valueString = "0"
         this.zeroFlag = false
         this.signalFlag = true
-        this.cursor = InputCheck.Cursor.CURSOR_START
+        this.cursor = Cursor.CURSOR_START
         this.integerList.clear()
         this.decimalList.clear()
     }
@@ -84,21 +84,21 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
             '0' -> {
                 this.zeroFlag = true
                 this.integerList.add('0')
-                this.cursor = InputCheck.Cursor.CURSOR_INTEGER
+                this.cursor = Cursor.CURSOR_INTEGER
             }
             '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                 this.integerList.add(c)
-                this.cursor = InputCheck.Cursor.CURSOR_INTEGER
+                this.cursor = Cursor.CURSOR_INTEGER
             }
             '.' -> {
                 this.integerList.add('0')
-                this.cursor = InputCheck.Cursor.CURSOR_DOT
+                this.cursor = Cursor.CURSOR_DOT
             }
             '+' -> {
             }
             '-' -> {
                 this.signalFlag = false // the number is negative
-                this.cursor = InputCheck.Cursor.CURSOR_SIGNAL
+                this.cursor = Cursor.CURSOR_SIGNAL
             }
             else -> {
                 this.result.code = ERROR_CODE_ILLEGAL_CHARACTER
@@ -116,7 +116,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
     private fun integerPartCheck(c: Char) {
         when (c) {
             '.' -> {
-                this.cursor = InputCheck.Cursor.CURSOR_DOT
+                this.cursor = Cursor.CURSOR_DOT
                 this.zeroFlag = false
             }
             '+' -> this.signalFlag = true
@@ -129,7 +129,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                 }
                 if (this.checkTempNumberForInteger(c)) {
                     this.integerList.add(c)
-                    this.cursor = InputCheck.Cursor.CURSOR_INTEGER
+                    this.cursor = Cursor.CURSOR_INTEGER
                 }
             }
             '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
@@ -138,7 +138,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                 }
                 if (this.checkTempNumberForInteger(c)) {
                     this.integerList.add(c)
-                    this.cursor = InputCheck.Cursor.CURSOR_INTEGER
+                    this.cursor = Cursor.CURSOR_INTEGER
                 }
             }
             else -> {
@@ -196,7 +196,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
             '-' -> this.signalFlag = false
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> if (this.checkTempNumberForDecimal(c)) {
                 this.decimalList.add(c)
-                this.cursor = InputCheck.Cursor.CURSOR_DECIMAL
+                this.cursor = Cursor.CURSOR_DECIMAL
             }
             else -> {
                 this.result.code = ERROR_CODE_ILLEGAL_CHARACTER
@@ -235,27 +235,27 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
      */
     private fun backSpaceCheck() {
         when (cursor) {
-            InputCheck.Cursor.CURSOR_START -> {
+            Cursor.CURSOR_START -> {
             }
-            InputCheck.Cursor.CURSOR_SIGNAL -> {
+            Cursor.CURSOR_SIGNAL -> {
                 this.signalFlag = true
-                this.cursor = InputCheck.Cursor.CURSOR_START
+                this.cursor = Cursor.CURSOR_START
             }
-            InputCheck.Cursor.CURSOR_INTEGER -> {
+            Cursor.CURSOR_INTEGER -> {
                 this.integerList.removeAt(this.integerList.size - 1)
                 if (this.integerList.size == 0) {
                     if (this.signalFlag) {
-                        this.cursor = InputCheck.Cursor.CURSOR_START
+                        this.cursor = Cursor.CURSOR_START
                     } else {
-                        this.cursor = InputCheck.Cursor.CURSOR_SIGNAL
+                        this.cursor = Cursor.CURSOR_SIGNAL
                     }
                 }
             }
-            InputCheck.Cursor.CURSOR_DOT -> this.cursor = InputCheck.Cursor.CURSOR_INTEGER
-            InputCheck.Cursor.CURSOR_DECIMAL -> {
+            Cursor.CURSOR_DOT -> this.cursor = Cursor.CURSOR_INTEGER
+            Cursor.CURSOR_DECIMAL -> {
                 this.decimalList.removeAt(this.decimalList.size - 1)
                 if (this.decimalList.size == 0) {
-                    this.cursor = InputCheck.Cursor.CURSOR_DOT
+                    this.cursor = Cursor.CURSOR_DOT
                 }
             }
         }
@@ -267,17 +267,17 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
     private fun generateResultValue() {
         val builder = StringBuilder()
         when (this.cursor) {
-            InputCheck.Cursor.CURSOR_START, InputCheck.Cursor.CURSOR_SIGNAL -> {
+            Cursor.CURSOR_START, Cursor.CURSOR_SIGNAL -> {
                 this.result.value = 0.0
                 return
             }
-            InputCheck.Cursor.CURSOR_INTEGER, InputCheck.Cursor.CURSOR_DOT -> {
+            Cursor.CURSOR_INTEGER, Cursor.CURSOR_DOT -> {
                 if (!this.signalFlag) {
                     builder.append('-')
                 }
                 this.integerList.forEach { builder.append(it) }
             }
-            InputCheck.Cursor.CURSOR_DECIMAL -> {
+            Cursor.CURSOR_DECIMAL -> {
                 if (!this.signalFlag) {
                     builder.append('-')
                 }
@@ -293,15 +293,15 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
         val builder = StringBuilder()
         val tempList: MutableList<Char> = mutableListOf()
         when (this.cursor) {
-            InputCheck.Cursor.CURSOR_START -> {
+            Cursor.CURSOR_START -> {
                 this.result.valueString = ""
                 return
             }
-            InputCheck.Cursor.CURSOR_SIGNAL -> {
+            Cursor.CURSOR_SIGNAL -> {
                 this.result.valueString = "-"
                 return
             }
-            InputCheck.Cursor.CURSOR_INTEGER -> {
+            Cursor.CURSOR_INTEGER -> {
                 for (i in this.integerList.indices.reversed()) {
                     val index = this.integerList.size - 1 - i
                     if (index > 0 && index % 3 == 0) {
@@ -313,7 +313,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                     tempList.add(0, '-')
                 }
             }
-            InputCheck.Cursor.CURSOR_DOT -> {
+            Cursor.CURSOR_DOT -> {
                 for (i in this.integerList.indices.reversed()) {
                     val index = this.integerList.size - 1 - i
                     if (index > 0 && index % 3 == 0) {
@@ -326,7 +326,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                 }
                 builder.append('.')
             }
-            InputCheck.Cursor.CURSOR_DECIMAL -> {
+            Cursor.CURSOR_DECIMAL -> {
                 for (i in this.integerList.indices.reversed()) {
                     val index = this.integerList.size - 1 - i
                     if (index > 0 && index % 3 == 0) {
