@@ -47,6 +47,7 @@ fun checkIntChar(para: ParaInt, char: Char, event: KeyboardEvent, InformationAre
         para.valueString = result.valueString
         InformationArea.textContent = infoText
     } else {
+        event.preventDefault()
         htmlInputElement.value = result.valueString
         para.inputValue = result.value
         para.valueString = result.valueString

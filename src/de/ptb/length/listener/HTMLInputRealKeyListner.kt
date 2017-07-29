@@ -52,6 +52,7 @@ fun checkRealChar(paraReal: ParaReal, char: Char, event: KeyboardEvent, Informat
         }
         InformationArea.textContent = infoText
     } else {
+        event.preventDefault()
         htmlInputElement.value = result.valueString
         paraReal.inputValue = result.value
         paraReal.valueString = result.valueString

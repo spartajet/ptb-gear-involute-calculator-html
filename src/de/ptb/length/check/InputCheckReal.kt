@@ -312,6 +312,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                 if (!this.signalFlag) {
                     tempList.add(0, '-')
                 }
+                tempList.forEach { builder.append(it) }
             }
             Cursor.CURSOR_DOT -> {
                 for (i in this.integerList.indices.reversed()) {
@@ -324,6 +325,7 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                 if (!this.signalFlag) {
                     tempList.add(0, '-')
                 }
+                tempList.forEach { builder.append(it) }
                 builder.append('.')
             }
             Cursor.CURSOR_DECIMAL -> {
@@ -337,11 +339,11 @@ class InputCheckReal(val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter:
                 if (!this.signalFlag) {
                     tempList.add(0, '-')
                 }
+                tempList.forEach { builder.append(it) }
                 builder.append('.')
-                this.decimalList.forEach { tempList.add(it) }
+                this.decimalList.forEach { builder.append(it) }
             }
         }
-        tempList.forEach { builder.append(it) }
         this.result.valueString = builder.toString()
     }
 }

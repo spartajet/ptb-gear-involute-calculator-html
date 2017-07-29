@@ -42,7 +42,7 @@ import kotlin.dom.clear
             }
             InformationArea.textContent = infoText
         } else {
-//            event.preventDefault()
+            event.preventDefault()
 //            htmlInputElement.clear()
             htmlInputElement.value = result.valueString
             iAngle.setValueString(result.valueString)
