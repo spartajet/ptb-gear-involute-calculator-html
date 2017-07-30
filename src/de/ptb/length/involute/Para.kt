@@ -98,7 +98,7 @@ abstract class Para(var fixed: Boolean = false) : ICheckable {
         /**
          * The Once more.
          */
-        protected var onceMore: Boolean = false
+        var onceMore: Boolean = false
     }
 
     /**

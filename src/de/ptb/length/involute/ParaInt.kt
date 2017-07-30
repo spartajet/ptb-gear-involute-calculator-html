@@ -37,11 +37,11 @@ abstract class ParaInt(fixed: Boolean, val unit: String, val valueLimitMax: Int,
     /**
      * The Round value.
      */
-    protected var round_Value: Int = 0
+    var round_Value: Int = 0
     /**
      * The Round contradiction.
      */
-    protected var round_Contradiction: Int = 0
+    var round_Contradiction: Int = 0
 
     override fun clear() {
         super.clear()

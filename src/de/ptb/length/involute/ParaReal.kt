@@ -11,7 +11,7 @@ import de.ptb.length.math.format
  * @create 2017-07-21 上午8:52
  * @email spartajet.guo@gmail.com
  */
-open class ParaReal( fixed: Boolean, val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter: Int, val valueLimitMax: Double, val valueLimitMin: Double, val unit: String) : Para(fixed) {
+open class ParaReal(fixed: Boolean, val lengthAllowedDotBefore: Int, val lengthAllowedDotAfter: Int, val valueLimitMax: Double, val valueLimitMin: Double, val unit: String) : Para(fixed) {
 
     val inputCheck: InputCheckReal = InputCheckReal(this.lengthAllowedDotBefore, this.lengthAllowedDotAfter, this.valueLimitMax, this
             .valueLimitMin)
@@ -42,11 +42,11 @@ open class ParaReal( fixed: Boolean, val lengthAllowedDotBefore: Int, val length
     /**
      * The Round value.
      */
-    protected var round_Value: Double = 0.0
+    var round_Value: Double = 0.0
     /**
      * The Round contradiction.
      */
-    protected var round_Contradiction: Double = 0.0
+    var round_Contradiction: Double = 0.0
 
 
     override fun calculateValue() = false

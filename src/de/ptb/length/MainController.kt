@@ -120,7 +120,7 @@ fun main(args: Array<String>) {
         println("axial module fixed: ${axialModuleFixBox.checked}")
     }
     baseModuleFixBox.onclick = {
-        moduleBase.fixed = baseDiameterFixBox.checked
+        moduleBase.fixed = baseModuleFixBox.checked
         println("base module fixed: ${baseModuleFixBox.checked}")
     }
     normalPressureAngleFixBox.onclick = {
@@ -199,5 +199,123 @@ fun main(args: Array<String>) {
     }
     quitBtn.onclick = {
         window.close()
+    }
+    calculateBtn.onclick = {
+        teethNumber.refresh()
+        moduleNormal.refresh()
+        moduleTransverse.refresh()
+        moduleAxial.refresh()
+        moduleBase.refresh()
+        anglePressureNormal.refresh()
+        anglePressure.refresh()
+        angleHelix.refresh()
+        angleLead.refresh()
+        diameterReference.refresh()
+        diameterBase.refresh()
+        var calculateCount: Int = 0
+        var deadloop = false
+        loop@ for (i in 0..1) {
+            Para.onceMore = true
+            while (Para.onceMore) {
+                calculateCount++
+                if (calculateCount >= 100) {
+                    InformationArea.textContent = "more loop than 100 times"
+                    deadloop = true
+                    break@loop
+                }
+                Para.onceMore = false
+                moduleNormal.calculateValue(moduleTransverse, angleHelix, diameterReference, teethNumber, angleLead, anglePressure, diameterBase, anglePressureNormal, moduleBase, moduleAxial)
+                //////logger.info(" module normal calculated, parameters values are: " + moduleNormal.toString())
+
+                moduleTransverse.calculateValue(moduleNormal, angleHelix, diameterReference, teethNumber, angleLead, anglePressure, diameterBase, anglePressureNormal, moduleBase, moduleAxial)
+                //////logger.info("module transverse calculated, parameters values are: " + moduleTransverse.toString())
+
+                angleHelix.calculateValue(diameterReference, moduleTransverse, moduleNormal, diameterBase, anglePressure, angleLead, moduleBase, anglePressureNormal, teethNumber)
+                //////logger.info("angle helix calculated, parameters values are: " + angleHelix.toString())
+
+                diameterReference.calculateValue(moduleTransverse, angleHelix, moduleNormal, teethNumber, diameterBase, anglePressure, anglePressureNormal, moduleBase)
+                //////logger.info("diameter reference calculated, parameters values are: " + diameterReference.toString())
+
+                teethNumber.calculateValue(diameterReference, moduleTransverse, angleHelix, moduleNormal, diameterBase, anglePressure, angleLead, moduleBase, anglePressureNormal)
+                //////logger.info("teeth number calculated, parameters values are: " + teethNumber.toString())
+
+                angleLead.calculateValue(moduleTransverse, moduleNormal, moduleAxial, angleHelix)
+                //////logger.info("angle lead calculated, parameters values are: " + angleLead.toString())
+
+                moduleAxial.calculateValue(moduleTransverse, moduleNormal, angleHelix, angleLead)
+                //////logger.info("module axial calculated, parameters values are: " + moduleAxial.toString())
+
+                moduleBase.calculateValue(moduleNormal, anglePressureNormal, angleHelix, diameterBase, teethNumber, anglePressure, moduleTransverse, diameterReference)
+                //////logger.info("module base calculated, parameters values are: " + moduleBase.toString())
+
+                anglePressureNormal.calculateValue(angleHelix, anglePressure, teethNumber, moduleNormal, diameterBase, moduleBase, moduleTransverse)
+                //////logger.info("angle pressure normal calculated, parameters values are: " + anglePressureNormal.toString())
+
+                anglePressure.calculateValue(anglePressureNormal, angleHelix, diameterReference, diameterBase, teethNumber, moduleTransverse, moduleNormal, moduleBase)
+                //////logger.info("angle pressure calculated, parameters values are: " + anglePressure.toString())
+
+                diameterBase.calculateValue(diameterReference, anglePressure, teethNumber, moduleTransverse, moduleNormal, angleHelix, moduleBase)
+                //////logger.info("diameter base calculated, parameters values are: " + diameterBase.toString())
+            }
+        }
+        if (deadloop) {
+            teethNumberContradictionInput.value = "no solution"
+            normalModuleContradictionInput.value = "no solution"
+            transverseModuleContradictionInput.value = "no solution"
+            axialModuleContradictionInput.value = "no solution"
+            baseModuleContradictionInput.value = "no solution"
+            normalPressureAngleContradictionInput.value = "no solution"
+            pressureAngleContradictionInput.value = "no solution"
+            helixAngleContradictionInput.value = "no solution"
+            leadAngleContradictionInput.value = "no solution"
+            referenceDiameterContradictionInput.value = "no solution"
+            baseDiameterContradictionInput.value = "no solution"
+        } else {
+            //calculate contradiction
+            moduleNormal.calculateContradiction(moduleTransverse, angleHelix, diameterReference, teethNumber, angleLead, anglePressure, diameterBase, anglePressureNormal, moduleBase, moduleAxial)
+            ////logger.info("module normal contradiction calculated, parameters value: " + moduleNormal.toString())
+            moduleTransverse.calculateContradiction(moduleNormal, angleHelix, diameterReference, teethNumber, angleLead, anglePressure, diameterBase, anglePressureNormal, moduleBase, moduleAxial)
+            ////logger.info("module transverse contradiction calculated, parameters value: " + moduleTransverse.toString())
+            angleHelix.calculateContradiction(diameterReference, moduleTransverse, moduleNormal, diameterBase, anglePressure, angleLead, moduleBase, anglePressureNormal, teethNumber, moduleAxial)
+            ////logger.info("angle helix contradiction calculated, parameters value: " + angleHelix.toString())
+            diameterReference.calculateContradiction(moduleTransverse, angleHelix, moduleNormal, teethNumber, diameterBase, anglePressure, anglePressureNormal, moduleBase)
+            ////logger.info("diameter reference contradiction calculated, parameters value: " + diameterReference.toString())
+            teethNumber.calculateContradiction(diameterReference, moduleTransverse, angleHelix, moduleNormal, diameterBase, anglePressure, angleLead, moduleBase, anglePressureNormal)
+            ////logger.info("teeth number contradiction calculated, parameters value: " + teethNumber.toString())
+            angleLead.calculateContradiction(moduleTransverse, moduleNormal, moduleAxial, angleHelix)
+            ////logger.info("angle lead contradiction calculated, parameters value: " + angleLead.toString())
+            moduleAxial.calculateContradiction(moduleTransverse, moduleNormal, angleHelix, angleLead)
+            ////logger.info("module axial contradiction calculated, parameters value: " + moduleAxial.toString())
+            moduleBase.calculateContradiction(moduleNormal, anglePressureNormal, angleHelix, diameterBase, teethNumber, anglePressure, moduleTransverse, diameterReference)
+            ////logger.info("module base contradiction calculated, parameters value: " + moduleBase.toString())
+            anglePressureNormal.calculateContradiction(angleHelix, anglePressure, teethNumber, moduleNormal, diameterBase, moduleBase, moduleTransverse)
+            ////logger.info("angle pressure normal contradiction calculated, parameters value: " + anglePressureNormal.toString())
+            anglePressure.calculateContradiction(anglePressureNormal, angleHelix, diameterReference, diameterBase, teethNumber, moduleTransverse, moduleNormal, moduleBase)
+            ////logger.info("angle pressure contradiction calculated, parameters value: " + anglePressure.toString())
+            diameterBase.calculateContradiction(diameterReference, anglePressure, teethNumber, moduleTransverse, moduleNormal, angleHelix, moduleBase)
+            ////logger.info("diameter base contradiction calculated, parameters value: " + diameterBase.toString())
+            helixAngleValueInput.value = if (angleHelix.roundValue()) angleHelix.getRoundValueString() else ""
+            leadAngleValueInput.value = if (angleLead.roundValue()) angleLead.getRoundValueString() else ""
+            normalPressureAngleValueInput.value = if (anglePressureNormal.roundValue()) anglePressureNormal.getRoundValueString() else ""
+            pressureAngleValueInput.value = if (anglePressure.roundValue()) anglePressure.getRoundValueString() else ""
+            baseDiameterValueInput.value = if (diameterBase.roundValue()) diameterBase.round_Value.toString() else ""
+            axialModuleValueInput.value = if (moduleAxial.roundValue()) moduleAxial.round_Value.toString() else ""
+            baseModuleValueInput.value = if (moduleBase.roundValue()) moduleBase.round_Value.toString() else ""
+            normalModuleValueInput.value = if (moduleNormal.roundValue()) moduleNormal.round_Value.toString() else ""
+            transverseModuleValueInput.value = if (moduleTransverse.roundValue()) moduleTransverse.round_Value.toString() else ""
+            teethNumberValueInput.value = if (teethNumber.roundValue()) teethNumber.round_Value.toString() else ""
+
+            helixAngleContradictionInput.value = if (angleHelix.roundContradiction()) angleHelix.getRoundContradictionString() else ""
+            leadAngleContradictionInput.value = if (angleLead.roundContradiction()) angleLead.getRoundContradictionString() else ""
+            normalPressureAngleContradictionInput.value = if (anglePressureNormal.roundContradiction()) anglePressureNormal.getRoundContradictionString() else ""
+            pressureAngleContradictionInput.value = if (anglePressure.roundContradiction()) anglePressure.getRoundContradictionString() else ""
+            baseDiameterContradictionInput.value = if (diameterBase.roundContradiction()) diameterBase.round_Contradiction.toString() else ""
+            referenceDiameterContradictionInput.value = if (diameterReference.roundContradiction()) diameterReference.round_Contradiction.toString() else ""
+            axialModuleContradictionInput.value = if (moduleAxial.roundContradiction()) moduleAxial.round_Contradiction.toString() else ""
+            baseModuleContradictionInput.value = if (moduleBase.roundContradiction()) moduleBase.round_Contradiction.toString() else ""
+            normalModuleContradictionInput.value=if (moduleNormal.roundContradiction()) moduleNormal.round_Contradiction.toString() else ""
+            transverseModuleContradictionInput.value=if (moduleTransverse.roundContradiction()) moduleTransverse.round_Contradiction.toString() else ""
+            teethNumberContradictionInput.value=if (teethNumber.roundContradiction()) teethNumber.round_Contradiction.toString() else ""
+        }
     }
 }

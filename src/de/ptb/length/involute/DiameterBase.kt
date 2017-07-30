@@ -82,6 +82,49 @@ class DiameterBase( fixed: Boolean,  lengthAllowedDotBefore: Int,  lengthAllowed
         }
     }
 
+    /**
+     * Calculate contradiction.
+
+     * @param diameterReference the diameter reference
+     * *
+     * @param anglePressure     the angle pressure real
+     * *
+     * @param teethNumber       the teeth number
+     * *
+     * @param moduleTransverse  the module transverse
+     * *
+     * @param moduleNormal      the module normal
+     * *
+     * @param angleHelix        the angle helix real
+     * *
+     * @param moduleBasic       the module basic
+     */
+    fun calculateContradiction(diameterReference: DiameterReference, anglePressure: IAnglePressure, teethNumber: TeethNumber, moduleTransverse: ModuleTransverse, moduleNormal: ModuleNormal, angleHelix: IAngleHelix, moduleBasic: ModuleBasic) {
+        if (this.result_Value === Double.MAX_VALUE) {
+            this.contradiction = Double.MAX_VALUE
+            return
+        }
+        if (this.calculateCount == 0) {
+            this.result_Value = this.inputValue
+            this.resultValueMax = this.inputValue
+            this.resultValueMin = this.inputValue
+        }
+        if (this.fixed && diameterReference.fixed && anglePressure.isFixed() && teethNumber.fixed && moduleTransverse.fixed && moduleNormal.fixed && angleHelix.isFixed() && moduleBasic.fixed) {
+            this.contradiction = this.resultValueMax - this.resultValueMin
+        } else if (this.fixed && diameterReference.fixed && anglePressure.isFixed()) {
+            this.contradiction = this.resultValueMax - this.resultValueMin
+        } else if (this.fixed && teethNumber.fixed && moduleTransverse.fixed && anglePressure.isFixed()) {
+            this.contradiction = this.resultValueMax - this.resultValueMin
+        } else if (this.fixed && teethNumber.fixed && moduleNormal.fixed && anglePressure.isFixed() && angleHelix.isFixed()) {
+            this.contradiction = this.resultValueMax - this.resultValueMin
+        } else if (this.fixed && moduleTransverse.fixed && teethNumber.fixed && anglePressure.isFixed()) {
+            this.contradiction = this.resultValueMax - this.resultValueMin
+        } else if (this.fixed && teethNumber.fixed && moduleBasic.fixed) {
+            this.contradiction = this.resultValueMax - this.resultValueMin
+        } else {
+            this.contradiction = 0.0
+        }
+    }
 
     /**
      * Calculate base diameter according to equation 13 from ISO 21771:2007

@@ -113,6 +113,57 @@ class TeethNumber(fixed: Boolean, unit: String, valueLimitMax: Int, valueLimitMi
 
     }
 
+    /**
+     * Calculate contradiction.
+
+     * @param diameterReference       the diameter reference
+     * *
+     * @param moduleTransverse        the module transverse
+     * *
+     * @param angleHelix          the angle helix real
+     * *
+     * @param moduleNormal            the module normal
+     * *
+     * @param diameterBase            the diameter base
+     * *
+     * @param anglePressure       the angle pressure real
+     * *
+     * @param angleLead           the angle lead real
+     * *
+     * @param moduleBasic             the module basic
+     * *
+     * @param anglePressureNormal the angle pressure normal real
+     */
+    fun calculateContradiction(diameterReference: DiameterReference, moduleTransverse: ModuleTransverse, angleHelix: IAngleHelix, moduleNormal: ModuleNormal, diameterBase: DiameterBase, anglePressure: IAnglePressure, angleLead: IAngleLead, moduleBasic: ModuleBasic, anglePressureNormal: IAnglePressureNormal) {
+        if (this.resultValue == Int.MAX_VALUE) {
+            this.contradiction = Double.MAX_VALUE
+            return
+        }
+        if (this.calculateCount == 0) {
+            this.resultValue = this.inputValue
+            this.resultValueMax = this.inputValue
+            this.resultValueMin = this.inputValue
+        }
+        if (this.fixed && diameterReference.fixed && moduleTransverse.fixed && angleHelix.isFixed() && moduleNormal.fixed && diameterBase.fixed && anglePressure.isFixed() && anglePressureNormal.isFixed() && moduleBasic.fixed) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else if (this.fixed && diameterReference.fixed && moduleTransverse.fixed) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else if (this.fixed && diameterReference.fixed && angleHelix.isFixed() && moduleNormal.fixed) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else if (this.fixed && diameterBase.fixed && moduleTransverse.fixed && anglePressure.isFixed()) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else if (this.fixed && diameterBase.fixed && anglePressureNormal.isFixed() && angleHelix.isFixed() && moduleNormal.fixed) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else if (this.fixed && diameterBase.fixed && anglePressure.isFixed() && moduleTransverse.fixed) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else if (this.fixed && diameterBase.fixed && moduleBasic.fixed) {
+            this.contradiction = (this.resultValueMax - this.resultValueMin).toDouble()
+        } else {
+            this.contradiction = 0.0
+        }
+
+    }
+
 
     /**
      * Calculate numbers of teeth according to equation 1 from ISO 21771:2007
