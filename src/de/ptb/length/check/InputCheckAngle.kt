@@ -46,7 +46,9 @@ class InputCheckAngle(val secondAllowDigits: Int, val checkLimitMax: Angle, val 
     override fun addChar(c: Char): InputCheckResult {
         this.result.code = ERROR_CODE_NO_ERROR
         this.result.message = ERROR_MESSAGE_NO_ERROR
-        if (c.toInt() == 8) {
+        val backSpaceChar = 8.toChar()
+        val isbackSpace = c == backSpaceChar
+        if (isbackSpace) {
             this.backSpaceCheck()
         } else {
             when (this.cursor) {
@@ -341,7 +343,7 @@ class InputCheckAngle(val secondAllowDigits: Int, val checkLimitMax: Angle, val 
     private fun firstCharCheck(c: Char) {
         when (c) {
             '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
-                if (c.toInt() > checkLimitMax.degree) {
+                if (c.toString().toInt() > checkLimitMax.degree) {
                     this.result.code = ERROR_CODE_BIGGER
                     this.result.message = ERROR_MESSAGE_BIGGER
                     return

@@ -1,7 +1,7 @@
 package de.ptb.length
 
 import de.ptb.length.involute.*
-import de.ptb.length.listener.addAngleParaListener
+import de.ptb.length.listener.HTMLInputAngleKeyListner
 import de.ptb.length.listener.addIntParaListener
 import de.ptb.length.listener.addRealParaListener
 import org.w3c.dom.*
@@ -65,6 +65,10 @@ fun main(args: Array<String>) {
     val calculateBtn: HTMLButtonElement = document.getElementById("calculateBtn") as HTMLButtonElement
     val quitBtn: HTMLButtonElement = document.getElementById("quitBtn") as HTMLButtonElement
 
+    var isNormalPressureAngleOrReal: Boolean = true   //real: true  / angle :false
+    var isPressureAngleOrReal: Boolean = true
+    var isLeadAngleOrReal: Boolean = true
+    var isHelixAngleOrReal: Boolean = true
 
     // initial module
     val teethNumber: TeethNumber = TeethNumber(false, "", 1000, 1, 4)
@@ -74,16 +78,16 @@ fun main(args: Array<String>) {
     val moduleBase = ModuleBasic(false, 2, 4, 100.0, 0.001, "")
     val anglePressureNormalReal: AnglePressureNormalReal = AnglePressureNormalReal(false, 2, 4, 45.0, 0.001, "")
     val anglePressureNormalAngle = AnglePressureNormalAngle(false, "", Angle(45.0), Angle(0.0), 3)
-    val anglePressureNormal = anglePressureNormalReal
+    var anglePressureNormal: IAnglePressureNormal = anglePressureNormalReal
     val anglePressureReal: AnglePressureReal = AnglePressureReal(false, 2, 4, 45.0, 0.001, "")
     val anglePressureAngle = AnglePressureAngle(false, "", Angle(45.0), Angle(0.0), 3)
-    val anglePressure = anglePressureReal
+    var anglePressure: IAnglePressure = anglePressureReal
     val angleHelixReal: AngleHelixReal = AngleHelixReal(false, 2, 4, 91.0, 0.0, "")
     val angleHelixAngle = AngleHelixAngle(false, "", Angle(91.0), Angle(0.0), 3)
-    val angleHelix = angleHelixReal
+    var angleHelix: IAngleHelix = angleHelixReal
     val angleLeadReal = AngleLeadReal(false, 2, 4, 91.0, 0.0, "")
     val angleLeadAngle = AngleLeadAngle(false, "", Angle(91.0), Angle(0.0), 3)
-    val angleLead = angleLeadReal
+    var angleLead: IAngleLead = angleLeadReal
     val diameterReference = DiameterReference(false, 4, 5, 10000.0, 0.001, "")
     val diameterBase = DiameterBase(false, 5, 4, 10000.0, 0.001, "")
 
@@ -93,14 +97,81 @@ fun main(args: Array<String>) {
     transverseModuleValueInput.addRealParaListener(moduleTransverse, InformationArea)
     axialModuleValueInput.addRealParaListener(moduleAxial, InformationArea)
     baseModuleValueInput.addRealParaListener(moduleBase, InformationArea)
-    normalPressureAngleValueInput.addAngleParaListener(anglePressureNormal, InformationArea)
-    pressureAngleValueInput.addAngleParaListener(anglePressure, InformationArea)
-    helixAngleValueInput.addAngleParaListener(angleHelix, InformationArea)
-    leadAngleValueInput.addAngleParaListener(angleLead, InformationArea)
+    val normalPressureAngleValueInputListener = HTMLInputAngleKeyListner(normalPressureAngleValueInput, anglePressureNormal, InformationArea)
+    normalPressureAngleValueInputListener.addAngleParaListener()
+    val pressureAngleValueInputListener = HTMLInputAngleKeyListner(pressureAngleValueInput, anglePressure, InformationArea)
+    pressureAngleValueInputListener.addAngleParaListener()
+    val helixAngleValueInputListener = HTMLInputAngleKeyListner(helixAngleValueInput, angleHelix, InformationArea)
+    helixAngleValueInputListener.addAngleParaListener()
+    val leadAngleValueInputListener = HTMLInputAngleKeyListner(leadAngleValueInput, angleLead, InformationArea)
+    leadAngleValueInputListener.addAngleParaListener()
     referenceDiameterValueInput.addRealParaListener(diameterReference, InformationArea)
     baseDiameterValueInput.addRealParaListener(diameterBase, InformationArea)
 
     // switch button
+    normalPressureAngleSwitchButton.onclick = {
+        isNormalPressureAngleOrReal = !isNormalPressureAngleOrReal
+        if (isNormalPressureAngleOrReal) {
+            normalPressureAngleSwitchButton.textContent = "R"
+            anglePressureNormal = anglePressureNormalReal
+        } else {
+            normalPressureAngleSwitchButton.textContent = "D"
+            anglePressureNormal = anglePressureNormalAngle
+        }
+        anglePressureNormal.clear()
+        normalPressureAngleValueInputListener.iAngle = anglePressureNormal
+        normalPressureAngleValueInput.value = ""
+        normalPressureAngleContradictionInput.value = ""
+        println("normal pressure angle switch button clicked")
+    }
+
+    pressureAngleSwitchButton.onclick = {
+        isPressureAngleOrReal = !isPressureAngleOrReal
+        if (isPressureAngleOrReal) {
+            pressureAngleSwitchButton.textContent = "R"
+            anglePressure = anglePressureReal
+        } else {
+            pressureAngleSwitchButton.textContent = "D"
+            anglePressure = anglePressureAngle
+        }
+        anglePressure.clear()
+        pressureAngleValueInputListener.iAngle = anglePressure
+        pressureAngleValueInput.value = ""
+        pressureAngleContradictionInput.value = ""
+        println("pressure angle switch button clicked")
+    }
+
+    helixAngleSwitchButton.onclick = {
+        isHelixAngleOrReal = !isHelixAngleOrReal
+        if (isHelixAngleOrReal) {
+            helixAngleSwitchButton.textContent = "R"
+            angleHelix = angleHelixReal
+        } else {
+            helixAngleSwitchButton.textContent = "D"
+            angleHelix = angleHelixAngle
+        }
+        angleHelix.clear()
+        helixAngleValueInputListener.iAngle = angleHelix
+        helixAngleValueInput.value = ""
+        helixAngleContradictionInput.value = ""
+        println("helix angle switch button clicked")
+    }
+
+    leadAngleSwitchButton.onclick={
+        isLeadAngleOrReal = !isLeadAngleOrReal
+        if (isLeadAngleOrReal) {
+            leadAngleSwitchButton.textContent = "R"
+            angleLead = angleLeadReal
+        } else {
+            leadAngleSwitchButton.textContent = "D"
+            angleLead=angleLeadAngle
+        }
+        angleLead.clear()
+        leadAngleValueInputListener.iAngle = angleLead
+        leadAngleValueInput.value = ""
+        leadAngleContradictionInput.value = ""
+        println("lead angle switch button clicked")
+    }
 
     //fix button
     teethNumberFixBox.onclick = {
@@ -313,9 +384,9 @@ fun main(args: Array<String>) {
             referenceDiameterContradictionInput.value = if (diameterReference.roundContradiction()) diameterReference.round_Contradiction.toString() else ""
             axialModuleContradictionInput.value = if (moduleAxial.roundContradiction()) moduleAxial.round_Contradiction.toString() else ""
             baseModuleContradictionInput.value = if (moduleBase.roundContradiction()) moduleBase.round_Contradiction.toString() else ""
-            normalModuleContradictionInput.value=if (moduleNormal.roundContradiction()) moduleNormal.round_Contradiction.toString() else ""
-            transverseModuleContradictionInput.value=if (moduleTransverse.roundContradiction()) moduleTransverse.round_Contradiction.toString() else ""
-            teethNumberContradictionInput.value=if (teethNumber.roundContradiction()) teethNumber.round_Contradiction.toString() else ""
+            normalModuleContradictionInput.value = if (moduleNormal.roundContradiction()) moduleNormal.round_Contradiction.toString() else ""
+            transverseModuleContradictionInput.value = if (moduleTransverse.roundContradiction()) moduleTransverse.round_Contradiction.toString() else ""
+            teethNumberContradictionInput.value = if (teethNumber.roundContradiction()) teethNumber.round_Contradiction.toString() else ""
         }
     }
 }

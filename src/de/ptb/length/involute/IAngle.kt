@@ -23,9 +23,9 @@ interface IAngle : ICheckable {
 
     fun isFixed(): Boolean
 
-//    fun roundValue(): Boolean
+    fun roundValue(): Boolean
 
-//    fun roundContradiction(): Boolean
+    fun roundContradiction(): Boolean
 
     fun getRoundValueString(): String
 
